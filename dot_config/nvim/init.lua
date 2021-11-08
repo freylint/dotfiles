@@ -1,3 +1,18 @@
+-- work around the unused undefined global vim lint from sumneko
+local vim = vim
+
+-- Imports
+local lsp_installer_servers = require'nvim-lsp-installer.servers'
+local treesitter = require 'nvim-treesitter.configs'
+local cmp = require 'cmp'
+local cmp_lsp = require 'cmp_nvim_lsp'
+local luasnip = require 'luasnip'
+local rust_tools = require 'rust-tools'
+
+local vimp = require('vimp')
+
+local lualine = require 'lualine'
+
 -- General
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -8,113 +23,83 @@ vim.o.hidden = true
 vim.o.history = 256
 
 vim.o.tabstop = 4
-vim.o.completeopt = 'menu,menuone,noselect'
+vim.o.completeopt = "menu,menuone,noselect"
 vim.o.shiftwidth = vim.o.tabstop
 
 
 -- Keymap
-local vimp = require('vimp')
+
+local RenameKey = "<F2>"
+local CmpScrollUpKey = "<F10>"
+local CmpScrollDownKey = "<F9>"
+local DocScrollUpKey = "<S-F10>"
+local DocScrollDownKey = "<S-F9>"
+local ExecCompletionKey = "<S-CR>"
 
 
--- Set colorscheme
+-- Editor features config
 vim.cmd('colorscheme gruvbox')
-
-
--- Treesitter config
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = { "javascript" }, -- List of parsers to ignore installing
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
+lualine.setup {
+   theme = "gruvbox_dark"
 }
 
--- Setup language servers
-local lsp_installer_servers = require'nvim-lsp-installer.servers'
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+-- IDE tools config
 
--- Completion Configuratoin
+treesitter.setup {
+   ensure_installed = "maintained",
+   ignore_install = {  },
+   highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+   },
+}
+
 cmp.setup {
   snippet = {
     expand = function(args)
-		require('luasnip').lsp_expand(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = {
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
+    [DocScrollDownKey] = cmp.mapping.scroll_docs(-4),
+    [DocScrollUpKey] = cmp.mapping.scroll_docs(4),
+    [ExecCompletionKey] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<Tab>'] = function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
-    ['<S-Tab>'] = function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
+    [CmpScrollUpKey] = cmp.select_next_item(),
+    [CmpScrollDownKey] = cmp.select_prev_item(),
   },
   sources = {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
-	{ name = 'buffer' },
-	{ name = 'crates' },
+    { name = 'buffer' },
+    { name = 'crates' },
   },
 }
 
--- Lua Semenko language server config
-local server_available, requested_server = lsp_installer_servers.get_server("rust_analyzer")
-if server_available then
+-- Setup language servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = cmp_lsp.update_capabilities(capabilities)
+local servers = { "rust_analyzer", "sumneko_lua", "elmls" }
+for _,server in ipairs(servers) do
+  local server_available, requested_server = lsp_installer_servers.get_server(server)
+  if server_available then
     requested_server:on_ready(function ()
-        local opts = {
-			capabilities = capabilities,
-		}
-        requested_server:setup(opts)
+      local opts = {
+	    capabilities = capabilities,
+	  }
+       requested_server:setup(opts)
     end)
     if not requested_server:is_installed() then
-        -- Queue the server to be installed
-        requested_server:install()
+      -- Queue the server to be installed
+      requested_server:install()
     end
 end
-
--- Rust Analyzer language server config
-local server_available, requested_server = lsp_installer_servers.get_server("semenko_lua")
-if server_available then
-	require('rust-tools').setup({})
-    requested_server:on_ready(function ()
-        local opts = {
-			capabilities = capabilities,
-		}
-        requested_server:setup(opts)
-    end)
-    if not requested_server:is_installed() then
-        -- Queue the server to be installed
-        requested_server:install()
-    end
 end
 
 -- Plugin Manager
@@ -123,6 +108,18 @@ return require('packer').startup(function(use)
   -- Package management
   use {'wbthomason/packer.nvim', opt = true}
   use 'svermeulen/vimpeccable'
+
+  -- Qol
+  use {
+   'nvim-lualine/lualine.nvim',
+   requires = {'kyazdani42/nvim-web-devicons', opt = true}
+  }
+
+  use {
+   'kyazdani42/nvim-tree.lua',
+   requires = 'kyazdani42/nvim-web-devicons',
+   config = function() require'nvim-tree'.setup {} end
+  }
 
   -- Libraries
   use 'nvim-lua/plenary.nvim'
@@ -133,25 +130,22 @@ return require('packer').startup(function(use)
   -- Sytax Highlighting
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 
-  -- Project exploring
-  use {
-    'kyazdani42/nvim-tree.lua',
-    requires = 'kyazdani42/nvim-web-devicons',
-    config = function() require'nvim-tree'.setup {} end
-  }
-
   -- Language Server Features
   use {
-    'neovim/nvim-lspconfig',
-    'williamboman/nvim-lsp-installer',
-	'hrsh7th/nvim-cmp',
-	'hrsh7th/cmp-nvim-lsp',
-	'hrsh7th/cmp-buffer',
-	'hrsh7th/cmp-path',
-	'hrsh7th/cmp-cmdline',
-	'L3MON4D3/LuaSnip',
-	'saadparwaiz1/cmp_luasnip',
-	'simrat39/rust-tools.nvim'
+   'neovim/nvim-lspconfig',
+   'williamboman/nvim-lsp-installer',
+   'hrsh7th/nvim-cmp',
+   'hrsh7th/cmp-nvim-lsp',
+   'hrsh7th/cmp-buffer',
+   'hrsh7th/cmp-path',
+   'hrsh7th/cmp-cmdline',
+   'L3MON4D3/LuaSnip',
+   'saadparwaiz1/cmp_luasnip',
+  }
+
+  use {
+   'simrat39/rust-tools.nvim',
+   config = function() rust_tools.setup{} end
   }
 
   -- Qol Language Features
@@ -160,9 +154,7 @@ return require('packer').startup(function(use)
     event = { "BufRead Cargo.toml" },
     requires = { { 'nvim-lua/plenary.nvim' } },
     config = function()
-        require('crates').setup()
+    require('crates').setup()
     end,
   }
-end
-)
-
+end)
