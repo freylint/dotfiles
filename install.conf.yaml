@@ -16,7 +16,10 @@
 - link:
     ~/.zshrc:
       force: true
-      path: shell/zshrc
+    ~/.config/:
+      glob: true
+      force: true
+      path: .config/*
 
 - create:
     - ~/xdg/dl
