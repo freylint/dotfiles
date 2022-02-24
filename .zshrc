@@ -1,35 +1,35 @@
-# If you come from bash you might have to change your $PATH.
+# .zsrch Kathering Vance
+
+# Setup basic env vars
 export PATH=$HOME/bin:~/.cargo/bin:/usr/local/bin:$PATH
+export editor=nvim
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
-alias src="$HOME/.local/share/void-packages/xbps-src"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# Setup package manager aliases
+if [ -f /etc/os-release ]
+then
+    . /etc/os-release
+    OS=$NAME
+    VER=$VERSION_ID
+fi
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+if [ "$OS" = "void" ]
+then
+	alias pmi="xbps-query"
+	alias pms="$HOME/.local/share/void-packages/xbps-src"
+fi
 
-# Uncomment the following line to use case-sensitive completion.
+# Theming options
+ZSH_THEME="candy"
+
+# Completion Options
 # CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
+# Style Updating
 zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
 zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
@@ -81,13 +81,6 @@ export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='mvim'
-fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
