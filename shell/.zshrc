@@ -17,8 +17,8 @@ fi
 
 if [ "$OS" = "void" ]
 then
-	alias pmi="xbps-query"
-	alias pms="$HOME/.local/share/void-packages/xbps-src"
+    alias pmi="xbps-query"
+    alias pms="$HOME/.local/share/void-packages/xbps-src"
 fi
 
 # Theming options
