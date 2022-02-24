@@ -1,31 +1,30 @@
 # tabstop=4 shiftwidth=4 expandtab
 - defaults:
-      link:
-          relink: true
+    link:
+    relink: true
 
 - clean: ["~"]
 
 - link:
-  ~/.zshrc:
+    ~/.zshrc:
       force: true
-      path: shell/.zshrc
-  ~/.config/:
+      path: shell/zshrc
+    ~/.config/:
       glob: true
       create: true
       path: config/xdg/*
 
 - create:
-      - ~/xdg/dl
-      - ~/xdg/desk
-      - ~/xdg/docs
-      - ~/xdg/pics
-      - ~/projects
-      - ~/drive
-
+    - ~/xdg/dl
+    - ~/xdg/desk
+    - ~/xdg/docs
+    - ~/xdg/pics
+    - ~/projects
+    - ~/drive
 - shell:
-      - [git submodule update --init --recursive, Installing submodules]
-      - [chsh -s $(which zsh), Making zsh the default shell]
-      - [
-            sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)",
-            Installing oh-my-zsh,
-        ]
+    - [git submodule update --init --recursive, Installing submodules]
+    - [chsh -s $(which zsh), Making zsh the default shell]
+    - [
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)",
+    Installing oh-my-zsh,
+    ]
