@@ -8,12 +8,11 @@
   ~/.zshrc:
     create: true
     force: true
-    path: zshrc
+    path: shell/.zshrc
   ~/.config/:
     glob: true
     create: true
     path: config/*
-    relink: true
 
 - create:
     - ~/xdg/dl
