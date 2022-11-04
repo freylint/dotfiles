@@ -1,18 +1,42 @@
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
+-- Nvim configuration
+vim.opt.number = true
+
+require("mason").setup()
+require("mason-lspconfig").setup()
+require("mason-lspconfig").setup_handlers {
+  -- Default
+  function (server_name)
+    require("lspconfig")[server_name].setup {}
+    require('guess-indent').setup {}
+  end,
+  -- Rust
+  ["rust_analyzer"] = function ()
+      require("rust-tools").setup {
+      dap = {
+        adapter = {
+        type = "executable",
+        command = "lldb-vscode",
+        name = "rt_lldb",
+        },
+      },
+    }
   end
-  return false
-end
+}
+
 
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
-  if packer_bootstrap then
-    require('packer').sync()
-  end
+  use {
+    'williamboman/mason.nvim',
+    'williamboman/mason-lspconfig',
+    'neovim/nvim-lspconfig',
+    'simrat39/rust-tools.nvim',
+    'mfussenegger/nvim-dap'
+  }
+
+  use 'nvim-lua/plenary.nvim'
+
+  use 'nmac427/guess-indent.nvim'
 end)
+
