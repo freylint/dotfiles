@@ -33,12 +33,12 @@ opt.clipboard = "unnamedplus"
 opt.splitright = true
 opt.splitbelow = true
 
+vim.g.adwaita_darker = true
+vim.cmd([[colorscheme adwaita]])
 
 g.mapleader = ' '
 g.maplocalleader = ','
 
-g.adwaita_darker = true
-cmd([[colorscheme adwaita]])
 
 -- Format on save
 cmd([[
@@ -100,7 +100,37 @@ return require('packer').startup(function(use)
   }
 
   -- Aesthetics
-  use 'Mofiqul/adwaita.nvim'
+  use {
+    'Mofiqul/adwaita.nvim',
+    -- TODO configure this
+    'stevearc/dressing.nvim',
+    -- TODO configure
+    'nvim-lualine/lualine.nvim'
+  }
+
+  -- Editor Features
+  use {
+    -- TODO configure
+    'jghauser/mkdir.nvim'
+  }
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      require("which-key").setup()
+    end
+  }
+  use {
+    'ggandor/leap.nvim',
+    config = function()
+      require('leap').add_default_mappings()
+    end
+  }
+  use {
+    'max397574/better-escape.nvim',
+    config = function()
+      require("better_escape").setup()
+    end,
+  }
 
   -- IDE Features
   use {
@@ -113,8 +143,13 @@ return require('packer').startup(function(use)
     'gpanders/editorconfig.nvim',
     'mhartington/formatter.nvim',
     'ryanoasis/vim-devicons',
-    'nvim-treesitter/nvim-treesitter'
+    'nvim-treesitter/nvim-treesitter',
+    -- TODO configure
+    'Saecki/crates.nvim',
+    -- TODO configure
+    'pianocomposer321/yabs.nvim'
   }
+  -- TODO combine with friendly snippets
   use({"L3MON4D3/LuaSnip", tag = "v<CurrentMajor>.*"})
 
 
