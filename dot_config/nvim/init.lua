@@ -32,6 +32,7 @@ opt.scrolloff = 8
 opt.clipboard = "unnamedplus"
 opt.splitright = true
 opt.splitbelow = true
+vim.wo.signcolumn = "yes"
 
 vim.g.adwaita_darker = true
 vim.cmd([[colorscheme adwaita]])
@@ -91,6 +92,7 @@ require'nvim-treesitter.configs'.setup({
     end
   }
 })
+--require'nvim-web-devicons'.setup()
 
 return require('packer').startup(function(use)
   -- General
@@ -142,15 +144,15 @@ return require('packer').startup(function(use)
     'nmac427/guess-indent.nvim',
     'gpanders/editorconfig.nvim',
     'mhartington/formatter.nvim',
-    'ryanoasis/vim-devicons',
+    'nvim-tree/nvim-web-devicons',
     'nvim-treesitter/nvim-treesitter',
     -- TODO configure
     'Saecki/crates.nvim',
     -- TODO configure
-    'pianocomposer321/yabs.nvim'
-  }
+    'pianocomposer321/yabs.nvim',
   -- TODO combine with friendly snippets
-  use({"L3MON4D3/LuaSnip", tag = "v<CurrentMajor>.*"})
+    'L3MON4D3/LuaSnip'
+  }
 
 
 end)
