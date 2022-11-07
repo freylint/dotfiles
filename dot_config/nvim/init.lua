@@ -113,6 +113,11 @@ vim.wo.signcolumn = "yes"
 vim.g.adwaita_darker = true
 vim.cmd([[colorscheme adwaita]])
 
+vim.cmd([[
+set encoding=utf-8
+set fileencoding=utf-8
+]])
+
 g.mapleader = ' '
 g.maplocalleader = ' '
 
