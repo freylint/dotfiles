@@ -4,8 +4,8 @@ local setup = function()
   wk.setup {}
 
   -- Setup space as leader key
-  vim.keymap.set("n", "<space>", "<Nop>", { silent = true, remap = false })
-  vim.g.mapleader = '<space>'
+  vim.keymap.set("n", "<space>", "",{ silent = true, remap = false })
+  vim.g.mapleader = ' '
   vim.g.maplocalleader = ','
 
   -- Setup LSP keybindings
@@ -22,7 +22,7 @@ local setup = function()
       },
       f = {
         name = "+file",
-        e = {"<cmd>Explore", "explore"},
+        e = {"<cmd>Explore<cr>", "explore"},
       },
     },
     }, {

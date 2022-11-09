@@ -1,6 +1,6 @@
 
 # Neovim artifacts
-.config/nvim/plugin/
+.config/nvim/plugin/packer_compiled.lua
 .config/nvim/.luarc.json
 
 # Private firefox profile components
