@@ -3,7 +3,7 @@ local setup = function()
 
   require("mason").setup()
   require("mason-lspconfig").setup({
-    ensure_installed = {"sumneko_lua", "rust_analyzer"}
+    ensure_installed = {"sumneko_lua", "rust_analyzer", "ansiblels", "tsserver"}
   })
 
 
@@ -52,7 +52,7 @@ local setup = function()
   })
 
   lspconfig["tsserver"].setup({
-    capbilities = capabilities;
+    capabilities = capabilities;
   })
 
   local luasnip = require("luasnip")
