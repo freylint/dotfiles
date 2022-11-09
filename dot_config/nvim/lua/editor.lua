@@ -19,7 +19,7 @@ local setup = function()
   require('guess-indent').setup {}
   require('dressing').setup ()
   require('impatient')
-  require("better-escape").setup()
+  require("better_escape").setup()
   -- TODO integrate with keymap file
   require('leap').add_default_mappings()
 
