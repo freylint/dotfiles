@@ -30,6 +30,9 @@ local setup = function()
   })
   end
 
+  -- Setup telescope extensions
+  require("telescope").load_extension "file_browser"
+
   -- Format on save
   vim.cmd([[
     augroup FormatAutogroup

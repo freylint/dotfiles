@@ -19,7 +19,11 @@ require('packer').startup(function(use)
   -- General
   use {
     'wbthomason/packer.nvim',
-    'nvim-lua/plenary.nvim'
+    'nvim-lua/plenary.nvim',
+  }
+  use {
+    'nvim-telescope/telescope.nvim', branch = '0.1.x',
+    requires = { {'nvim-lua/plenary.nvim'} }
   }
 
   -- Aesthetics
@@ -33,7 +37,9 @@ require('packer').startup(function(use)
   use {
     'jghauser/mkdir.nvim',
     'takac/vim-hardtime',
-    'tpope/vim-fugitive'
+    'tpope/vim-fugitive',
+    -- TODO configure
+    'nvim-telescope/telescope-file-browser.nvim'
   }
   use {
     "folke/which-key.nvim",
@@ -43,6 +49,7 @@ require('packer').startup(function(use)
   }
   use {
     'ggandor/leap.nvim',
+    -- TODO integrate w/ keymap file
     config = function()
       require('leap').add_default_mappings()
     end
@@ -65,14 +72,24 @@ require('packer').startup(function(use)
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig',
     'neovim/nvim-lspconfig',
-    'simrat39/rust-tools.nvim',
     'mfussenegger/nvim-dap',
+    'simrat39/rust-tools.nvim',
     'nmac427/guess-indent.nvim',
     'gpanders/editorconfig.nvim',
     'mhartington/formatter.nvim',
     'nvim-tree/nvim-web-devicons',
     'nvim-treesitter/nvim-treesitter',
     'jose-elias-alvarez/null-ls.nvim',
+  }
+
+  use {
+    -- TODO setup additional completion sources
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-nvim-lsp',
+    'saadparwaiz1/cmp_luasnip',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
   }
 
   use {
