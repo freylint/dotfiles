@@ -16,8 +16,12 @@ local setup = function()
   })
 
   local capabilities = require("cmp_nvim_lsp").default_capabilities()
+  local lspconfig = require("lspconfig")
+  local runtime_path = vim.split(package.path, ";")
+  table.insert(runtime_path, "lua/?.lua")
+  table.insert(runtime_path, "lua/?/init.lua")
 
-  require("lspconfig").sumneko_lua.setup({
+  lspconfig["sumneko_lua"].setup({
     capabilities = capabilities,
     settings = {
       Lua = {
@@ -38,13 +42,17 @@ local setup = function()
     },
   })
 
-  require("lspconfig").rust_analyzer.setup({
+  lspconfig["rust_analyzer"].setup({
     capabilities = capabilities,
   })
 
   -- TODO use ansible-lint from mason install
-  require("lspconfig").ansiblels.setup({
+  lspconfig["ansiblels"].setup({
     capabilities = capabilities,
+  })
+
+  lspconfig["tsserver"].setup({
+    capbilities = capabilities;
   })
 
   local luasnip = require("luasnip")

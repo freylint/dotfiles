@@ -1,8 +1,4 @@
 local setup = function()
-  -- Set up IDE features
-  local runtime_path = vim.split(package.path, ";")
-  table.insert(runtime_path, "lua/?.lua")
-  table.insert(runtime_path, "lua/?/init.lua")
 
   -- Dont run treesitter on files >100 KB
   require'nvim-treesitter.configs'.setup({
@@ -22,6 +18,10 @@ local setup = function()
   require('nvim-web-devicons').setup()
   require('guess-indent').setup {}
   require('dressing').setup ()
+  require('impatient')
+  require("better-escape").setup()
+  -- TODO integrate with keymap file
+  require('leap').add_default_mappings()
 
   require('lualine').setup({
     options = {

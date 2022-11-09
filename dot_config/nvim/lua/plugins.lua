@@ -38,33 +38,13 @@ require('packer').startup(function(use)
     'jghauser/mkdir.nvim',
     'takac/vim-hardtime',
     'tpope/vim-fugitive',
-    -- TODO configure
-    'nvim-telescope/telescope-file-browser.nvim'
-  }
-  use {
+    -- TODO figure out why netrw isn't being overriden
+    'nvim-telescope/telescope-file-browser.nvim',
+    'kylechui/nvim-surround',
     "folke/which-key.nvim",
-    config = function()
-      require("which-key").setup()
-    end
-  }
-  use {
-    'ggandor/leap.nvim',
-    -- TODO integrate w/ keymap file
-    config = function()
-      require('leap').add_default_mappings()
-    end
-  }
-  use {
     'max397574/better-escape.nvim',
-    config = function()
-      require("better_escape").setup()
-    end,
-  }
-  use {
     'lewis6991/impatient.nvim',
-    config = function()
-      require('impatient')
-    end
+    'ggandor/leap.nvim',
   }
 
   -- IDE Features
